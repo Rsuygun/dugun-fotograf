@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
+<title>Şeymanur & Okan — Anılarımızı Paylaş</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#1F3A2E;
+    --ink-deep:#122019;
+    --gold:#B8912F;
+    --gold-light:#D9BB6A;
+    --blush:#D98A93;
+    --paper:#FBF7EF;
+    --paper-deep:#F2EADA;
+    --line: rgba(31,58,46,0.14);
+    --shadow: 0 10px 30px rgba(18,32,25,0.12);
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Poppins',sans-serif;
+    display:flex;
+    justify-content:center;
+    min-height:100vh;
+    overflow-x:hidden;
+  }
+  .app{
+    width:100%;
+    max-width:480px;
+    min-height:100vh;
+    background:var(--paper);
+    display:flex;
+    flex-direction:column;
+    position:relative;
+  }
+
+  /* ---------- HERO ---------- */
+  .hero{
+    background: radial-gradient(120% 140% at 50% -10%, #234B39 0%, var(--ink) 55%, var(--ink-deep) 100%);
+    padding:52px 24px 78px;
+    text-align:center;
+    position:relative;
+    color:var(--paper);
+  }
+  .seal{
+    width:132px;height:132px;margin:0 auto 18px;position:relative;
+  }
+  .seal svg{width:100%;height:100%;display:block;}
+  .monogram{
+    font-family:'Cormorant Garamond',serif;
+    font-style:italic;
+    font-weight:600;
+    font-size:19px;
+    letter-spacing:.5px;
+    color: var(--gold-light);
+    margin-top:2px;
+  }
+  .hero h1{
+    font-family:'Cormorant Garamond',serif;
+    font-weight:600;
+    font-style:italic;
+    font-size:30px;
+    line-height:1.25;
+    margin:6px 0 10px;
+    letter-spacing:.2px;
+  }
+  .hero p{
+    font-size:13.5px;
+    line-height:1.6;
+    color: rgba(251,247,239,0.78);
+    max-width:320px;
+    margin:0 auto;
+  }
+
+  /* ---------- CARD ---------- */
+  .card{
+    background:var(--paper);
+    border-radius:28px 28px 0 0;
+    margin-top:-42px;
+    flex:1;
+    padding:30px 22px 40px;
+    position:relative;
+    box-shadow: 0 -18px 40px rgba(18,32,25,0.08);
+  }
+
+  .dropzone{
+    border:1.5px dashed rgba(31,58,46,0.32);
+    border-radius:20px;
+    background:var(--paper-deep);
+    padding:30px 20px;
+    text-align:center;
+    cursor:pointer;
+    transition:.2s ease;
+  }
+  .dropzone.drag{
+    border-color:var(--gold);
+    background: #F6EFDC;
+  }
+  .dropzone svg{width:38px;height:38px;margin-bottom:10px;}
+  .dropzone .dz-title{
+    font-weight:600;
+    font-size:15px;
+    color:var(--ink);
+    margin-bottom:4px;
+  }
+  .dropzone .dz-sub{
+    font-size:12px;
+    color:rgba(31,58,46,0.6);
+  }
+  input[type=file]{display:none;}
+
+  .thumbs{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:8px;
+    margin-top:16px;
+  }
+  .thumb{
+    position:relative;
+    aspect-ratio:1/1;
+    border-radius:12px;
+    overflow:hidden;
+    background:var(--paper-deep);
+    box-shadow: var(--shadow);
+  }
+  .thumb img{width:100%;height:100%;object-fit:cover;display:block;}
+  .thumb .rm{
+    position:absolute;top:5px;right:5px;
+    width:20px;height:20px;border-radius:50%;
+    background:rgba(18,32,25,0.68);
+    color:#fff;font-size:12px;line-height:20px;text-align:center;
+    border:none;cursor:pointer;
+  }
+  .thumb .bar{
+    position:absolute;left:0;right:0;bottom:0;height:3px;
+    background:var(--gold);
+    width:0%;
+    transition:width .25s ease;
+  }
+
+  .count-line{
+    margin-top:14px;
+    font-size:12.5px;
+    color:rgba(31,58,46,0.65);
+    text-align:center;
+  }
+
+  .upload-btn{
+    width:100%;
+    margin-top:22px;
+    padding:16px;
+    border:none;
+    border-radius:16px;
+    background: linear-gradient(135deg, var(--gold-light), var(--gold));
+    color:var(--ink-deep);
+    font-family:'Poppins',sans-serif;
+    font-weight:600;
+    font-size:15px;
+    letter-spacing:.2px;
+    cursor:pointer;
+    box-shadow: 0 10px 24px rgba(184,145,47,0.35);
+    transition: transform .15s ease, opacity .15s ease;
+  }
+  .upload-btn:active{transform:scale(0.98);}
+  .upload-btn:disabled{opacity:.5;cursor:not-allowed;box-shadow:none;}
+
+  .status{
+    margin-top:14px;
+    text-align:center;
+    font-size:13px;
+    min-height:18px;
+    color:var(--blush);
+  }
+
+  .footnote{
+    text-align:center;
+    margin-top:28px;
+    font-family:'Cormorant Garamond',serif;
+    font-style:italic;
+    font-size:14px;
+    color:rgba(31,58,46,0.55);
+  }
+
+  /* ---------- SUCCESS SCREEN ---------- */
+  .success{
+    display:none;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    padding:60px 30px;
+    flex:1;
+  }
+  .success.show{display:flex;}
+  .card.hide{display:none;}
+  .success .seal{width:110px;height:110px;margin-bottom:20px;}
+  .success h2{
+    font-family:'Cormorant Garamond',serif;
+    font-style:italic;
+    font-weight:600;
+    font-size:26px;
+    color:var(--ink);
+    margin:0 0 10px;
+  }
+  .success p{
+    font-size:13.5px;
+    color:rgba(31,58,46,0.65);
+    max-width:280px;
+    line-height:1.6;
+    margin:0 0 26px;
+  }
+  .again-btn{
+    background:none;
+    border:1.5px solid var(--ink);
+    color:var(--ink);
+    border-radius:14px;
+    padding:12px 22px;
+    font-family:'Poppins',sans-serif;
+    font-weight:500;
+    font-size:13px;
+    cursor:pointer;
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{transition:none !important;}
+  }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <div class="hero">
+    <div class="seal">
+      <svg viewBox="0 0 132 132" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="66" cy="66" r="62" fill="none" stroke="#D9BB6A" stroke-width="1.4" opacity="0.85"/>
+        <circle cx="66" cy="66" r="52" fill="none" stroke="#D9BB6A" stroke-width="1" opacity="0.55"/>
+        <!-- laurel left -->
+        <g stroke="#D9BB6A" stroke-width="1.3" fill="none" opacity="0.9">
+          <path d="M40 92 C 30 78, 28 58, 36 40" stroke-linecap="round"/>
+          <path d="M36 46 C 30 45, 26 42, 24 37"/>
+          <path d="M34 56 C 28 56, 24 53, 21 48"/>
+          <path d="M34 66 C 27 67, 23 65, 19 60"/>
+          <path d="M36 76 C 29 78, 25 77, 20 73"/>
+          <path d="M40 86 C 33 89, 29 89, 24 86"/>
+        </g>
+        <!-- laurel right -->
+        <g stroke="#D9BB6A" stroke-width="1.3" fill="none" opacity="0.9">
+          <path d="M92 92 C 102 78, 104 58, 96 40" stroke-linecap="round"/>
+          <path d="M96 46 C 102 45, 106 42, 108 37"/>
+          <path d="M98 56 C 104 56, 108 53, 111 48"/>
+          <path d="M98 66 C 105 67, 109 65, 113 60"/>
+          <path d="M96 76 C 103 78, 107 77, 112 73"/>
+          <path d="M92 86 C 99 89, 103 89, 108 86"/>
+        </g>
+      </svg>
+    </div>
+    <div class="monogram">Ş &amp; O</div>
+    <h1>Bu güzel günün<br>anılarını bizimle paylaş</h1>
+    <p>Objektifinden kaçan o özel kareleri aşağıdan kolayca bize gönderebilirsin.</p>
+  </div>
+
+  <div class="card" id="uploadCard">
+    <div class="dropzone" id="dropzone">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#1F3A2E" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M4 16.5V18a2 2 0 002 2h12a2 2 0 002-2v-1.5"/>
+        <path d="M7 9l5-5 5 5"/>
+        <path d="M12 4v13"/>
+      </svg>
+      <div class="dz-title">Fotoğraf seç ya da sürükle</div>
+      <div class="dz-sub">Birden fazla fotoğraf seçebilirsin</div>
+      <input type="file" id="fileInput" accept="image/*" multiple>
+    </div>
+
+    <div class="thumbs" id="thumbs"></div>
+    <div class="count-line" id="countLine" style="display:none;"></div>
+
+    <button class="upload-btn" id="uploadBtn" disabled>Fotoğrafları Yükle</button>
+    <div class="status" id="statusMsg"></div>
+
+    <div class="footnote">— Şeymanur &amp; Okan —</div>
+  </div>
+
+  <div class="success" id="successScreen">
+    <div class="seal">
+      <svg viewBox="0 0 132 132" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="66" cy="66" r="62" fill="none" stroke="#B8912F" stroke-width="1.4"/>
+        <circle cx="66" cy="66" r="52" fill="none" stroke="#B8912F" stroke-width="1" opacity="0.6"/>
+        <path d="M46 68 L60 82 L88 50" fill="none" stroke="#1F3A2E" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+    <h2>Teşekkürler!</h2>
+    <p>Fotoğrafların bize ulaştı. Bu güzel günü bizimle paylaştığın için teşekkür ederiz 🤍</p>
+    <button class="again-btn" id="againBtn">Başka fotoğraf ekle</button>
+  </div>
+
+</div>
+
+<script>
+  // ============================================================
+  // BURAYI DEĞİŞTİR: Google Apps Script Web App URL'ini buraya yapıştır
+  // Kurulum rehberindeki adımları takip ederek bu URL'i alacaksın.
+  // ============================================================
+  const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxX3xXXdHD8kuI93s70M0HrmqoAO1Gtzzx43EBsdKMhIabb2QPi0yJ1tNZaYKQ1C9Ekkg/exec";
+
+  const dropzone = document.getElementById('dropzone');
+  const fileInput = document.getElementById('fileInput');
+  const thumbsEl = document.getElementById('thumbs');
+  const countLine = document.getElementById('countLine');
+  const uploadBtn = document.getElementById('uploadBtn');
+  const statusMsg = document.getElementById('statusMsg');
+  const uploadCard = document.getElementById('uploadCard');
+  const successScreen = document.getElementById('successScreen');
+  const againBtn = document.getElementById('againBtn');
+
+  let selectedFiles = [];
+
+  dropzone.addEventListener('click', () => fileInput.click());
+
+  ['dragover','dragenter'].forEach(evt=>{
+    dropzone.addEventListener(evt, e=>{
+      e.preventDefault();
+      dropzone.classList.add('drag');
+    });
+  });
+  ['dragleave','drop'].forEach(evt=>{
+    dropzone.addEventListener(evt, e=>{
+      e.preventDefault();
+      dropzone.classList.remove('drag');
+    });
+  });
+  dropzone.addEventListener('drop', e=>{
+    const files = Array.from(e.dataTransfer.files).filter(f=>f.type.startsWith('image/'));
+    addFiles(files);
+  });
+
+  fileInput.addEventListener('change', e=>{
+    addFiles(Array.from(e.target.files));
+    fileInput.value = '';
+  });
+
+  function addFiles(files){
+    files.forEach(file=>{
+      selectedFiles.push(file);
+      const reader = new FileReader();
+      const thumb = document.createElement('div');
+      thumb.className = 'thumb';
+      const idx = selectedFiles.length - 1;
+      reader.onload = e=>{
+        thumb.innerHTML = `<img src="${e.target.result}"><button class="rm" data-idx="${idx}">×</button><div class="bar"></div>`;
+      };
+      reader.readAsDataURL(file);
+      thumbsEl.appendChild(thumb);
+    });
+    updateUI();
+  }
+
+  thumbsEl.addEventListener('click', e=>{
+    if(e.target.classList.contains('rm')){
+      const idx = Number(e.target.dataset.idx);
+      const thumbNode = e.target.closest('.thumb');
+      thumbNode.remove();
+      selectedFiles[idx] = null;
+      updateUI();
+    }
+  });
+
+  function updateUI(){
+    const activeCount = selectedFiles.filter(Boolean).length;
+    uploadBtn.disabled = activeCount === 0;
+    countLine.style.display = activeCount ? 'block' : 'none';
+    countLine.textContent = activeCount + (activeCount === 1 ? ' fotoğraf seçildi' : ' fotoğraf seçildi');
+  }
+
+  uploadBtn.addEventListener('click', async ()=>{
+    const files = selectedFiles.filter(Boolean);
+    if(files.length === 0) return;
+
+    uploadBtn.disabled = true;
+    uploadBtn.textContent = 'Yükleniyor...';
+    statusMsg.textContent = '';
+
+    const bars = document.querySelectorAll('.thumb .bar');
+    bars.forEach(b=> b.style.width = '30%');
+
+    try{
+      const formData = new FormData();
+      files.forEach((file, i)=> formData.append('file'+i, file));
+
+      const res = await fetch(APPS_SCRIPT_URL, {
+        method: 'POST',
+        body: formData
+      });
+
+      bars.forEach(b=> b.style.width = '100%');
+
+      const data = await res.json();
+      if(data.success){
+        setTimeout(()=>{
+          uploadCard.classList.add('hide');
+          successScreen.classList.add('show');
+        }, 300);
+      } else {
+        throw new Error(data.error || 'Bilinmeyen hata');
+      }
+    } catch(err){
+      statusMsg.textContent = 'Bir şeyler ters gitti, lütfen tekrar dene 🙏';
+      uploadBtn.disabled = false;
+      uploadBtn.textContent = 'Fotoğrafları Yükle';
+      console.error(err);
+    }
+  });
+
+  againBtn.addEventListener('click', ()=>{
+    selectedFiles = [];
+    thumbsEl.innerHTML = '';
+    uploadBtn.textContent = 'Fotoğrafları Yükle';
+    uploadBtn.disabled = true;
+    countLine.style.display = 'none';
+    statusMsg.textContent = '';
+    successScreen.classList.remove('show');
+    uploadCard.classList.remove('hide');
+  });
+</script>
+</body>
+</html>
